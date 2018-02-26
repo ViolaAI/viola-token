@@ -33,8 +33,8 @@ contract TokenERC20 {
     address public owner = msg.sender;
 
     // Public variables of the token
-    string public name = "VIOLA";
-    string public symbol = "VIOLA";
+    string public name = "VIOLET";
+    string public symbol = "VLT";
     uint8 public decimals = 18;
     // 18 decimals is the strongly suggested default, avoid changing it
     uint256 public totalSupply = 250000000 * 10 ** uint256(decimals);
