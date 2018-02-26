@@ -48,11 +48,10 @@ contract TokenERC20 {
     mapping (address => mapping (address => uint256)) public allowance;
     mapping (address => mapping (address => uint256)) allowed;
 
-    // This generates a public event on the blockchain that will notify clients
+    // Events
     event Transfer(address indexed from, address indexed to, uint256 value);
-
-    // This notifies clients about the amount burnt
     event Burn(address indexed from, uint256 value);
+    event Approval(address indexed _owner, address indexed _spender, uint256 _value);
 
     modifier onlyOwner() {
         require(msg.sender == owner);
@@ -72,8 +71,15 @@ contract TokenERC20 {
      * Internal transfer, only can be called by this contract
      */
     function _transfer(address _from, address _to, uint _value) internal {
-        // Prevent transfer to 0x0 address. Use burn() instead
-        require(_to != 0x0);
+        // allow sending 0 tokens
+        if (_value == 0) {
+            Transfer(_from, _to, _value);    // Follow the spec to louch the event when transfer 0
+            return;
+        }
+
+        // Do not allow transfer to 0x0 or the token contract itself
+        require((_to != 0) && (_to != address(this)));
+
         // Check if the sender has enough
         require(balanceOf[_from] >= _value);
         // Check for overflows
@@ -128,6 +134,7 @@ contract TokenERC20 {
     function approve(address _spender, uint256 _value) public
         returns (bool success) {
         allowance[msg.sender][_spender] = _value;
+        Approval(msg.sender, _spender, _value);
         return true;
     }
 
@@ -210,7 +217,7 @@ contract TokenERC20 {
         assert(value > 0);
         delete balanceOf[msg.sender];
         totalSupply = totalSupply.sub(value);
-        assert(upgrader.upgradeFor(msg.sender, value));
+        require(upgrader.upgradeFor(msg.sender, value));
         return true;
     }
 
@@ -223,13 +230,13 @@ contract TokenERC20 {
         balanceOf[_for] = balanceOf[_for].sub(_value);
         allowed[_for][msg.sender] = _allowance.sub(_value);
         totalSupply = totalSupply.sub(_value);
-        assert(upgrader.upgradeFrom(msg.sender, _for, _value));
+        require(upgrader.upgradeFrom(msg.sender, _for, _value));
         return true;
     }
 
     function () payable external {
         if (upgradable) {
-            assert(upgrade());
+            require(upgrade());
             return;
         }
         revert();
