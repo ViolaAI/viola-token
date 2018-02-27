@@ -120,7 +120,7 @@ contract TokenERC20 {
         balanceOf[_from] = balanceOf[_from].sub(_value);
         balanceOf[_to] = balanceOf[_to].add(_value);
         allowance[_from][msg.sender] = allowance[_from][msg.sender].sub(_value);
-        _transfer(_from, _to, _value);
+        Transfer(_from, _to, _value);
         return true;
     }
 
