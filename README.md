@@ -1,4 +1,4 @@
-# viola-token
+# VLT-token
 'VIOLET Token' Standard ERC20 token contract
 
 Symbol      : VLT
