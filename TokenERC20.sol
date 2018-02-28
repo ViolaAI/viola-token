@@ -231,12 +231,4 @@ contract TokenERC20 {
         require(upgrader.upgradeFrom(msg.sender, _for, _value));
         return true;
     }
-
-    function () payable external {
-        if (upgradable) {
-            require(upgrade());
-            return;
-        }
-        revert();
-    }
 }
