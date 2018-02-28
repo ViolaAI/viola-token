@@ -1,6 +1,9 @@
 # viola-token
-Viola.AI token smart contract
+'VIOLET Token' Standard ERC20 token contract
 
-- Standard ERC20 functions
-- Owner-related functions
-- Upgrading capabilities
+Symbol      : VLT
+Name        : VIOLET
+Total supply: 250 Million
+Decimals    : 18
+
+(c) Viola.AI Tech Pte Ltd 2018. The MIT Licence.
