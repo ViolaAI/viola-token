@@ -87,8 +87,8 @@ contract VLTToken is ERC20Interface {
 
     address public owner = msg.sender;
 
-    string public symbol;
-    string public name;
+    bytes32 public symbol;
+    bytes32 public name;
     uint8 public decimals;
     uint256 public _totalSupply;
 
