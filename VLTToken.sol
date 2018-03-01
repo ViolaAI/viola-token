@@ -256,6 +256,23 @@ contract VLTToken is ERC20Interface {
         Transfer(burner, address(0), _value);
     }
 
+    /**
+     * Destroy tokens from other account
+     * Remove `_value` tokens from the system irreversibly on behalf of `_from`.
+     * @param _from the address of the sender
+     * @param _value the amount of money to burn
+     */
+    function burnFrom(address _from, uint256 _value) public returns (bool) {
+        require(_value <= balances[_from]);               // Check if the targeted balance is enough
+        require(_value <= allowed[_from][msg.sender]);    // Check allowed allowance
+        balances[_from] = balances[_from].sub(_value);  // Subtract from the targeted balance
+        allowed[_from][msg.sender] = allowed[_from][msg.sender].sub(_value);             // Subtract from the sender's allowance
+        _totalSupply = _totalSupply.sub(_value);                              // Update totalSupply
+        Burn(_from, _value);
+        Transfer(_from, address(0), _value);
+        return true;
+    } 
+
     // ------------------------------------------------------------------------
     // Owner can transfer out any accidentally sent ERC20 tokens
     // ------------------------------------------------------------------------
