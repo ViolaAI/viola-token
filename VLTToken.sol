@@ -135,6 +135,12 @@ contract VLTToken is ERC20Interface {
     * @param _value The amount to be transferred.
     */
     function transfer(address _to, uint256 _value) public returns (bool) {
+        // allow sending 0 tokens
+        if (_value == 0) {
+            Transfer(msg.sender, _to, _value);    // Follow the spec to louch the event when transfer 0
+            return;
+        }
+        
         require(_to != address(0));
         require(_value <= balances[msg.sender]);
 
@@ -168,6 +174,12 @@ contract VLTToken is ERC20Interface {
     * @param _value uint256 the amount of tokens to be transferred
     */
     function transferFrom(address _from, address _to, uint256 _value) public returns (bool) {
+        // allow sending 0 tokens
+        if (_value == 0) {
+            Transfer(_from, _to, _value);    // Follow the spec to louch the event when transfer 0
+            return;
+        }
+
         require(_to != address(0));
         require(_value <= balances[_from]);
         require(_value <= allowed[_from][msg.sender]);
