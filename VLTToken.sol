@@ -104,7 +104,7 @@ contract VLTToken is ERC20Interface {
     // Constructor
     // ------------------------------------------------------------------------
     function VLTToken() public {
-        symbol = "VLT";
+        symbol = "VAI";
         name = "VIOLET";
         decimals = 18;
         _totalSupply = 250000000 * 10**uint256(decimals);
